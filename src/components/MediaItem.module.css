@@ -1,0 +1,130 @@
+.item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.item:hover {
+  border-color: rgba(124, 111, 247, 0.3);
+  background: var(--bg-card-hover);
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 0.97rem;
+  color: var(--text-primary);
+}
+
+.year {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.cat {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--accent-dim);
+  color: var(--accent-hover);
+  border: 1px solid rgba(124, 111, 247, 0.25);
+}
+
+.notes {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.rating {
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ratingDenom {
+  font-size: 0.7rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.ratingHigh { color: var(--rating-high); }
+.ratingMid  { color: var(--rating-mid); }
+.ratingLow  { color: var(--rating-low); }
+
+.actions {
+  display: flex;
+  gap: 4px;
+}
+
+.editBtn,
+.deleteBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.editBtn {
+  color: var(--text-secondary);
+}
+
+.editBtn:hover {
+  color: var(--accent-hover);
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.deleteBtn {
+  color: var(--text-secondary);
+}
+
+.deleteBtn:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: var(--danger-dim);
+}

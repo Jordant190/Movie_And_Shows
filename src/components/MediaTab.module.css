@@ -1,0 +1,149 @@
+.tab {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stats {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 120px;
+}
+
+.statValue {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent-hover);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.catToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 14px;
+  color: var(--text-secondary);
+  font-size: 0.83rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  align-self: flex-start;
+}
+
+.catToggle:hover {
+  border-color: var(--accent);
+  color: var(--accent-hover);
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search {
+  flex: 1;
+  min-width: 160px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: var(--text-primary);
+  font-size: 0.87rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.search:focus {
+  border-color: var(--border-focus);
+}
+
+.search::placeholder {
+  color: var(--text-muted);
+}
+
+.select {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.select:focus {
+  border-color: var(--border-focus);
+}
+
+.addBtn {
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  padding: 9px 20px;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.addBtn:hover {
+  background: var(--accent-hover);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 4px;
+}
+
+.emptyTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.emptyText {
+  font-size: 0.87rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}

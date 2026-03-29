@@ -1,0 +1,239 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.header h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.6rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+
+.closeBtn:hover {
+  color: var(--text-primary);
+}
+
+.form {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ratingLabel {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.input {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: var(--text-primary);
+  font-size: 0.93rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input:focus {
+  border-color: var(--border-focus);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.inputSmall {
+  max-width: 140px;
+}
+
+.inputError {
+  border-color: var(--danger) !important;
+}
+
+.ratingRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ratingMin,
+.ratingMax {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  min-width: 14px;
+}
+
+.slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 4px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--rating-color, var(--accent));
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  transition: transform 0.1s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.catGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.catChip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.catChip:hover {
+  border-color: var(--accent);
+  color: var(--accent-hover);
+}
+
+.catSelected {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent-hover);
+  font-weight: 500;
+}
+
+.textarea {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: var(--text-primary);
+  font-size: 0.87rem;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+
+.textarea:focus {
+  border-color: var(--border-focus);
+}
+
+.textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+.cancelBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 20px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.cancelBtn:hover {
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+.submitBtn {
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  padding: 9px 24px;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.submitBtn:hover {
+  background: var(--accent-hover);
+}
+
+.error {
+  font-size: 0.78rem;
+  color: var(--danger);
+}
