@@ -1,2 +1,2 @@
-# Finance-Tracker
-financial tracker
+# Movie_And_Shows
+movie and show tracker
