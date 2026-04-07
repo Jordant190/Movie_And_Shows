@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import MediaTab from './components/MediaTab'
 import WatchlistTab from './components/WatchlistTab'
 import Recommendations from './components/Recommendations'
@@ -18,6 +18,17 @@ export default function App() {
   const [watchlist, setWatchlist] = useLocalStorage('mediaTracker_watchlist', [])
   const [watching, setWatching] = useLocalStorage('mediaTracker_watching', [])
   const [watchlistCategories, setWatchlistCategories] = useLocalStorage('mediaTracker_watchlistCategories', [...DEFAULT_CATEGORIES])
+
+  // Merge any newly added default categories into existing saved lists
+  useEffect(() => {
+    const missing = (saved) => DEFAULT_CATEGORIES.filter(c => !saved.includes(c))
+    const mm = missing(movieCategories)
+    const ms = missing(showCategories)
+    const mw = missing(watchlistCategories)
+    if (mm.length) setMovieCategories(prev => [...prev, ...mm])
+    if (ms.length) setShowCategories(prev => [...prev, ...ms])
+    if (mw.length) setWatchlistCategories(prev => [...prev, ...mw])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   function moveToWatching(item) {
     setWatchlist(prev => prev.filter(i => i.id !== item.id))
