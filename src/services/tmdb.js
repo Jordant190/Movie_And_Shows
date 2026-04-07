@@ -6,7 +6,10 @@ export const IMAGE_BASE = 'https://image.tmdb.org/t/p'
 const cache = new Map()
 
 export async function fetchPoster(title, year, mediaType = 'movie') {
-  if (!API_KEY) return null
+  if (!API_KEY) {
+    console.debug('[TMDB] no API key found — set VITE_TMDB_API_KEY in .env')
+    return null
+  }
 
   const tmdbType = mediaType === 'show' ? 'tv' : 'movie'
   const cacheKey = `${tmdbType}:${title}:${year}`
@@ -20,12 +23,18 @@ export async function fetchPoster(title, year, mediaType = 'movie') {
         ? tmdbType === 'movie' ? `&year=${year}` : `&first_air_date_year=${year}`
         : ''
       const url = `${BASE_URL}/search/${tmdbType}?api_key=${API_KEY}&query=${encodeURIComponent(title)}${yearParam}`
+      console.debug('[TMDB] fetching:', url.replace(API_KEY, '***'))
       const res = await fetch(url)
-      if (!res.ok) return null
+      if (!res.ok) {
+        console.debug('[TMDB] bad response:', res.status, res.statusText)
+        return null
+      }
       const data = await res.json()
       const posterPath = data.results?.[0]?.poster_path ?? null
+      console.debug('[TMDB] poster for', title, ':', posterPath)
       return posterPath ? `${IMAGE_BASE}/w185${posterPath}` : null
-    } catch {
+    } catch (err) {
+      console.debug('[TMDB] fetch error:', err)
       return null
     }
   })()
