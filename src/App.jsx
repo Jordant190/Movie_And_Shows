@@ -5,7 +5,7 @@ import Recommendations from './components/Recommendations'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import styles from './App.module.css'
 
-const DEFAULT_CATEGORIES = ['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Thriller', 'Romance', 'Animation', 'Crime', 'Mystery', 'Fantasy', 'Documentary']
+const DEFAULT_CATEGORIES = ['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Thriller', 'Romance', 'Animation', 'Anime', 'Crime', 'Mystery', 'Fantasy', 'Documentary']
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('movies')
