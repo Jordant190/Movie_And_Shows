@@ -108,13 +108,82 @@
   text-align: right;
 }
 
+.tabsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .sectionTabs {
   display: flex;
   gap: 4px;
   background: var(--bg-secondary);
   padding: 4px;
   border-radius: 10px;
-  align-self: flex-start;
+}
+
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.refreshBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent-hover);
+  background: var(--accent-dim);
+}
+
+.genreFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: -8px;
+}
+
+.genreChip {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.genreChip:hover {
+  border-color: rgba(124, 111, 247, 0.4);
+  color: var(--text-primary);
+}
+
+.genreChipActive {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.clearFilter {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent-hover);
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .sectionTab {
