@@ -1,3 +1,4 @@
+import { usePoster } from '../hooks/usePoster'
 import styles from './MediaItem.module.css'
 
 function RatingBadge({ rating }) {
@@ -7,9 +8,23 @@ function RatingBadge({ rating }) {
   return <span className={`${styles.rating} ${cls}`}>{rating}<span className={styles.ratingDenom}>/10</span></span>
 }
 
-export default function MediaItem({ item, onDelete, onEdit }) {
+function PosterThumb({ title, year, mediaType }) {
+  const poster = usePoster(title, year, mediaType)
+  if (!poster) return null
+  return (
+    <img
+      className={styles.poster}
+      src={poster}
+      alt={`${title} poster`}
+      loading="lazy"
+    />
+  )
+}
+
+export default function MediaItem({ item, type, onDelete, onEdit }) {
   return (
     <div className={styles.item}>
+      <PosterThumb title={item.title} year={item.year} mediaType={type} />
       <div className={styles.left}>
         <div className={styles.titleRow}>
           <span className={styles.title}>{item.title}</span>

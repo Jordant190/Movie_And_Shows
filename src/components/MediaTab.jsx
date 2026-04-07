@@ -150,6 +150,7 @@ export default function MediaTab({ type, items, setItems, categories, setCategor
             <MediaItem
               key={item.id}
               item={item}
+              type={type}
               onDelete={handleDelete}
               onEdit={openEdit}
             />

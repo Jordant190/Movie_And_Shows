@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { getRecommendations } from '../data/mediaDatabase'
+import { usePoster } from '../hooks/usePoster'
 import styles from './Recommendations.module.css'
 
 function ScoreBar({ score }) {
@@ -15,9 +16,19 @@ function ScoreBar({ score }) {
   )
 }
 
-function RecCard({ item }) {
+function RecCard({ item, mediaType }) {
+  const poster = usePoster(item.title, item.year, mediaType)
+
   return (
     <div className={styles.card}>
+      {poster && (
+        <img
+          className={styles.cardPoster}
+          src={poster}
+          alt={`${item.title} poster`}
+          loading="lazy"
+        />
+      )}
       <div className={styles.cardTop}>
         <div>
           <div className={styles.cardTitle}>{item.title}</div>
@@ -160,7 +171,7 @@ export default function Recommendations({ movies, shows }) {
           {activeSection === 'movies' && (
             recs.movies.length > 0 ? (
               <div className={styles.grid}>
-                {recs.movies.map(item => <RecCard key={item.title} item={item} />)}
+                {recs.movies.map(item => <RecCard key={item.title} item={item} mediaType="movie" />)}
               </div>
             ) : (
               <div className={styles.noRecs}>
@@ -172,7 +183,7 @@ export default function Recommendations({ movies, shows }) {
           {activeSection === 'shows' && (
             recs.shows.length > 0 ? (
               <div className={styles.grid}>
-                {recs.shows.map(item => <RecCard key={item.title} item={item} />)}
+                {recs.shows.map(item => <RecCard key={item.title} item={item} mediaType="show" />)}
               </div>
             ) : (
               <div className={styles.noRecs}>
