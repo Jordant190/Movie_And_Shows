@@ -143,14 +143,12 @@ export function getRecommendations(watchedMovies, watchedShows) {
     .map(scoreItem)
     .filter(Boolean)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 15)
 
   const unseenShows = SHOW_DATABASE
     .filter(s => !watchedTitles.has(s.title.toLowerCase().trim()))
     .map(scoreItem)
     .filter(Boolean)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 15)
 
   return { movies: unseenMovies, shows: unseenShows }
 }

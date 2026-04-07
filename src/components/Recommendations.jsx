@@ -4,6 +4,15 @@ import { usePoster } from '../hooks/usePoster'
 import MediaForm from './MediaForm'
 import styles from './Recommendations.module.css'
 
+function shuffleArray(arr) {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
 function ScoreBar({ score }) {
   const pct = ((score - 1) / 9) * 100
   let color = 'var(--rating-low)'
@@ -162,16 +171,50 @@ export default function Recommendations({
   movieCategories, showCategories,
 }) {
   const [activeSection, setActiveSection] = useState('movies')
-  const [pendingWatched, setPendingWatched] = useState(null) // { rec, mediaType }
-  const recs = useMemo(() => getRecommendations(movies, shows), [movies, shows])
-  const total = movies.length + shows.length
+  const [pendingWatched, setPendingWatched] = useState(null)
+  const [refreshNonce, setRefreshNonce] = useState(0)
+  const [selectedGenre, setSelectedGenre] = useState(null)
 
-  function getAddedStatus(title, mediaType) {
+  const allRecs = useMemo(() => getRecommendations(movies, shows), [movies, shows])
+
+  // Shuffle the full scored list each time source data changes or user refreshes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const displayed = useMemo(() => ({
+    movies: shuffleArray(allRecs.movies).slice(0, 15),
+    shows: shuffleArray(allRecs.shows).slice(0, 15),
+  }), [allRecs, refreshNonce])
+
+  const total = movies.length + shows.length
+  const mediaType = activeSection === 'movies' ? 'movie' : 'show'
+
+  const availableGenres = useMemo(() => {
+    const source = activeSection === 'movies' ? displayed.movies : displayed.shows
+    const genreSet = new Set()
+    source.forEach(item => item.genres.forEach(g => genreSet.add(g)))
+    return [...genreSet].sort()
+  }, [displayed, activeSection])
+
+  const currentItems = activeSection === 'movies' ? displayed.movies : displayed.shows
+  const filteredItems = selectedGenre
+    ? currentItems.filter(item => item.genres.includes(selectedGenre))
+    : currentItems
+
+  function handleSectionChange(section) {
+    setActiveSection(section)
+    setSelectedGenre(null)
+  }
+
+  function handleRefresh() {
+    setRefreshNonce(n => n + 1)
+    setSelectedGenre(null)
+  }
+
+  function getAddedStatus(title, type) {
     const t = title.toLowerCase()
-    if (mediaType === 'movie' && movies.some(i => i.title.toLowerCase() === t)) return 'Watched'
-    if (mediaType === 'show' && shows.some(i => i.title.toLowerCase() === t)) return 'Watched'
-    if (watchlist.some(i => i.title.toLowerCase() === t && i.mediaType === mediaType)) return 'Plan to Watch'
-    if (watching.some(i => i.title.toLowerCase() === t && i.mediaType === mediaType)) return 'Watching'
+    if (type === 'movie' && movies.some(i => i.title.toLowerCase() === t)) return 'Watched'
+    if (type === 'show' && shows.some(i => i.title.toLowerCase() === t)) return 'Watched'
+    if (watchlist.some(i => i.title.toLowerCase() === t && i.mediaType === type)) return 'Plan to Watch'
+    if (watching.some(i => i.title.toLowerCase() === t && i.mediaType === type)) return 'Watching'
     return null
   }
 
@@ -187,7 +230,7 @@ export default function Recommendations({
     )
   }
 
-  const noPrefs = recs.movies.length === 0 && recs.shows.length === 0
+  const noPrefs = allRecs.movies.length === 0 && allRecs.shows.length === 0
 
   return (
     <div className={styles.container}>
@@ -209,65 +252,75 @@ export default function Recommendations({
         </div>
       ) : (
         <>
-          <div className={styles.sectionTabs}>
-            <button
-              className={`${styles.sectionTab} ${activeSection === 'movies' ? styles.sectionTabActive : ''}`}
-              onClick={() => setActiveSection('movies')}
-            >
-              Movies
-              {recs.movies.length > 0 && <span className={styles.badge}>{recs.movies.length}</span>}
-            </button>
-            <button
-              className={`${styles.sectionTab} ${activeSection === 'shows' ? styles.sectionTabActive : ''}`}
-              onClick={() => setActiveSection('shows')}
-            >
-              Shows
-              {recs.shows.length > 0 && <span className={styles.badge}>{recs.shows.length}</span>}
+          <div className={styles.tabsRow}>
+            <div className={styles.sectionTabs}>
+              <button
+                className={`${styles.sectionTab} ${activeSection === 'movies' ? styles.sectionTabActive : ''}`}
+                onClick={() => handleSectionChange('movies')}
+              >
+                Movies
+                {displayed.movies.length > 0 && <span className={styles.badge}>{displayed.movies.length}</span>}
+              </button>
+              <button
+                className={`${styles.sectionTab} ${activeSection === 'shows' ? styles.sectionTabActive : ''}`}
+                onClick={() => handleSectionChange('shows')}
+              >
+                Shows
+                {displayed.shows.length > 0 && <span className={styles.badge}>{displayed.shows.length}</span>}
+              </button>
+            </div>
+            <button className={styles.refreshBtn} onClick={handleRefresh} title="Shuffle recommendations">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="23 4 23 10 17 10"/>
+                <polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+              </svg>
+              Refresh
             </button>
           </div>
 
-          {activeSection === 'movies' && (
-            recs.movies.length > 0 ? (
-              <div className={styles.grid}>
-                {recs.movies.map(item => (
-                  <RecCard
-                    key={item.title}
-                    item={item}
-                    mediaType="movie"
-                    addedStatus={getAddedStatus(item.title, 'movie')}
-                    onAddToPlan={() => onAddToPlan(item, 'movie')}
-                    onAddToWatching={() => onAddToWatching(item, 'movie')}
-                    onAddAsWatched={() => setPendingWatched({ rec: item, mediaType: 'movie' })}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className={styles.noRecs}>
-                <p>No movie recommendations available. Try adding categories to your watched movies.</p>
-              </div>
-            )
+          {availableGenres.length > 0 && (
+            <div className={styles.genreFilters}>
+              <button
+                className={`${styles.genreChip} ${selectedGenre === null ? styles.genreChipActive : ''}`}
+                onClick={() => setSelectedGenre(null)}
+              >
+                All
+              </button>
+              {availableGenres.map(genre => (
+                <button
+                  key={genre}
+                  className={`${styles.genreChip} ${selectedGenre === genre ? styles.genreChipActive : ''}`}
+                  onClick={() => setSelectedGenre(g => g === genre ? null : genre)}
+                >
+                  {genre}
+                </button>
+              ))}
+            </div>
           )}
 
-          {activeSection === 'shows' && (
-            recs.shows.length > 0 ? (
-              <div className={styles.grid}>
-                {recs.shows.map(item => (
-                  <RecCard
-                    key={item.title}
-                    item={item}
-                    mediaType="show"
-                    addedStatus={getAddedStatus(item.title, 'show')}
-                    onAddToPlan={() => onAddToPlan(item, 'show')}
-                    onAddToWatching={() => onAddToWatching(item, 'show')}
-                    onAddAsWatched={() => setPendingWatched({ rec: item, mediaType: 'show' })}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className={styles.noRecs}>
-                <p>No show recommendations available. Try adding categories to your watched shows.</p>
-              </div>
-            )
+          {filteredItems.length > 0 ? (
+            <div className={styles.grid}>
+              {filteredItems.map(item => (
+                <RecCard
+                  key={item.title}
+                  item={item}
+                  mediaType={mediaType}
+                  addedStatus={getAddedStatus(item.title, mediaType)}
+                  onAddToPlan={() => onAddToPlan(item, mediaType)}
+                  onAddToWatching={() => onAddToWatching(item, mediaType)}
+                  onAddAsWatched={() => setPendingWatched({ rec: item, mediaType })}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className={styles.noRecs}>
+              {selectedGenre ? (
+                <p>No {activeSection} recommendations for <strong>{selectedGenre}</strong>. Try a different category or <button className={styles.clearFilter} onClick={() => setSelectedGenre(null)}>clear the filter</button>.</p>
+              ) : (
+                <p>No {activeSection} recommendations available. Try adding categories to your watched {activeSection}.</p>
+              )}
+            </div>
           )}
         </>
       )}
