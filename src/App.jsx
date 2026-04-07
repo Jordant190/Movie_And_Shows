@@ -33,6 +33,67 @@ export default function App() {
     }
   }
 
+  function moveWatchedToPlan(item, type) {
+    if (type === 'movie') setMovies(prev => prev.filter(i => i.id !== item.id))
+    else setShows(prev => prev.filter(i => i.id !== item.id))
+    setWatchlist(prev => [{
+      id: crypto.randomUUID(),
+      title: item.title,
+      year: item.year,
+      mediaType: type,
+      categories: item.categories,
+      notes: item.notes,
+      progress: '',
+      dateAdded: new Date().toISOString(),
+    }, ...prev])
+  }
+
+  function moveWatchedToWatchingList(item, type) {
+    if (type === 'movie') setMovies(prev => prev.filter(i => i.id !== item.id))
+    else setShows(prev => prev.filter(i => i.id !== item.id))
+    setWatching(prev => [{
+      id: crypto.randomUUID(),
+      title: item.title,
+      year: item.year,
+      mediaType: type,
+      categories: item.categories,
+      notes: item.notes,
+      progress: '',
+      dateAdded: new Date().toISOString(),
+    }, ...prev])
+  }
+
+  function addRecToPlan(rec, mediaType) {
+    setWatchlist(prev => [{
+      id: crypto.randomUUID(),
+      title: rec.title,
+      year: rec.year,
+      mediaType,
+      categories: rec.genres,
+      notes: '',
+      progress: '',
+      dateAdded: new Date().toISOString(),
+    }, ...prev])
+  }
+
+  function addRecToWatching(rec, mediaType) {
+    setWatching(prev => [{
+      id: crypto.randomUUID(),
+      title: rec.title,
+      year: rec.year,
+      mediaType,
+      categories: rec.genres,
+      notes: '',
+      progress: '',
+      dateAdded: new Date().toISOString(),
+    }, ...prev])
+  }
+
+  function addRecAsWatched(ratedItem, mediaType) {
+    if (mediaType === 'movie') setMovies(prev => [ratedItem, ...prev])
+    else setShows(prev => [ratedItem, ...prev])
+  }
+
   return (
     <div className={styles.app}>
       <header className={styles.header}>
@@ -93,6 +154,8 @@ export default function App() {
             setItems={setMovies}
             categories={movieCategories}
             setCategories={setMovieCategories}
+            onMoveToPlan={moveWatchedToPlan}
+            onMoveToWatching={moveWatchedToWatchingList}
           />
         )}
         {activeTab === 'shows' && (
@@ -102,6 +165,8 @@ export default function App() {
             setItems={setShows}
             categories={showCategories}
             setCategories={setShowCategories}
+            onMoveToPlan={moveWatchedToPlan}
+            onMoveToWatching={moveWatchedToWatchingList}
           />
         )}
         {activeTab === 'watchlist' && (
@@ -129,7 +194,17 @@ export default function App() {
           />
         )}
         {activeTab === 'recommendations' && (
-          <Recommendations movies={movies} shows={shows} />
+          <Recommendations
+            movies={movies}
+            shows={shows}
+            watchlist={watchlist}
+            watching={watching}
+            onAddToPlan={addRecToPlan}
+            onAddToWatching={addRecToWatching}
+            onAddAsWatched={addRecAsWatched}
+            movieCategories={movieCategories}
+            showCategories={showCategories}
+          />
         )}
       </main>
     </div>

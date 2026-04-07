@@ -105,7 +105,9 @@
 }
 
 .editBtn,
-.deleteBtn {
+.deleteBtn,
+.planBtn,
+.watchingBtn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -136,4 +138,24 @@
   color: var(--danger);
   border-color: var(--danger);
   background: var(--danger-dim);
+}
+
+.planBtn {
+  color: var(--text-secondary);
+}
+
+.planBtn:hover {
+  color: #f59e0b;
+  border-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.watchingBtn {
+  color: var(--text-secondary);
+}
+
+.watchingBtn:hover {
+  color: var(--rating-high);
+  border-color: var(--rating-high);
+  background: rgba(34, 197, 94, 0.1);
 }

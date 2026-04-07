@@ -6,7 +6,7 @@ import styles from './MediaTab.module.css'
 
 const DEFAULT_CATEGORIES = ['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Thriller', 'Romance', 'Animation', 'Crime', 'Mystery', 'Fantasy', 'Documentary']
 
-export default function MediaTab({ type, items, setItems, categories, setCategories }) {
+export default function MediaTab({ type, items, setItems, categories, setCategories, onMoveToPlan, onMoveToWatching }) {
   const [showForm, setShowForm] = useState(false)
   const [editingItem, setEditingItem] = useState(null)
   const [filterCat, setFilterCat] = useState('all')
@@ -153,6 +153,8 @@ export default function MediaTab({ type, items, setItems, categories, setCategor
               type={type}
               onDelete={handleDelete}
               onEdit={openEdit}
+              onMoveToPlan={onMoveToPlan ? () => onMoveToPlan(item, type) : undefined}
+              onMoveToWatching={onMoveToWatching ? () => onMoveToWatching(item, type) : undefined}
             />
           ))}
         </div>
