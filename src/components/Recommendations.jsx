@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { getRecommendations } from '../data/mediaDatabase'
 import { usePoster } from '../hooks/usePoster'
+import MediaForm from './MediaForm'
 import styles from './Recommendations.module.css'
 
 function ScoreBar({ score }) {
@@ -16,8 +17,13 @@ function ScoreBar({ score }) {
   )
 }
 
-function RecCard({ item, mediaType }) {
+function AddedBadge({ label }) {
+  return <span className={styles.addedBadge}>{label}</span>
+}
+
+function RecCard({ item, mediaType, addedStatus, onAddToPlan, onAddToWatching, onAddAsWatched }) {
   const poster = usePoster(item.title, item.year, mediaType)
+  const [open, setOpen] = useState(false)
 
   return (
     <div className={styles.card}>
@@ -54,6 +60,43 @@ function RecCard({ item, mediaType }) {
         {item.matchReasons.length > 0 && (
           <div className={styles.reason}>
             Because you liked: <strong>{item.matchReasons.join(', ')}</strong>
+          </div>
+        )}
+      </div>
+
+      <div className={styles.cardActions}>
+        {addedStatus ? (
+          <AddedBadge label={addedStatus} />
+        ) : (
+          <div className={styles.addDropdown}>
+            <button
+              className={styles.addBtn}
+              onClick={() => setOpen(o => !o)}
+            >
+              + Add to List
+            </button>
+            {open && (
+              <div className={styles.dropdownMenu}>
+                <button className={styles.dropdownItem} onClick={() => { onAddToPlan(); setOpen(false) }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                  </svg>
+                  Plan to Watch
+                </button>
+                <button className={styles.dropdownItem} onClick={() => { onAddToWatching(); setOpen(false) }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                  </svg>
+                  Currently Watching
+                </button>
+                <button className={styles.dropdownItem} onClick={() => { onAddAsWatched(); setOpen(false) }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Mark as Watched
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -112,10 +155,25 @@ function PreferenceProfile({ items, label }) {
   )
 }
 
-export default function Recommendations({ movies, shows }) {
+export default function Recommendations({
+  movies, shows,
+  watchlist, watching,
+  onAddToPlan, onAddToWatching, onAddAsWatched,
+  movieCategories, showCategories,
+}) {
   const [activeSection, setActiveSection] = useState('movies')
+  const [pendingWatched, setPendingWatched] = useState(null) // { rec, mediaType }
   const recs = useMemo(() => getRecommendations(movies, shows), [movies, shows])
   const total = movies.length + shows.length
+
+  function getAddedStatus(title, mediaType) {
+    const t = title.toLowerCase()
+    if (mediaType === 'movie' && movies.some(i => i.title.toLowerCase() === t)) return 'Watched'
+    if (mediaType === 'show' && shows.some(i => i.title.toLowerCase() === t)) return 'Watched'
+    if (watchlist.some(i => i.title.toLowerCase() === t && i.mediaType === mediaType)) return 'Plan to Watch'
+    if (watching.some(i => i.title.toLowerCase() === t && i.mediaType === mediaType)) return 'Watching'
+    return null
+  }
 
   if (total === 0) {
     return (
@@ -171,7 +229,17 @@ export default function Recommendations({ movies, shows }) {
           {activeSection === 'movies' && (
             recs.movies.length > 0 ? (
               <div className={styles.grid}>
-                {recs.movies.map(item => <RecCard key={item.title} item={item} mediaType="movie" />)}
+                {recs.movies.map(item => (
+                  <RecCard
+                    key={item.title}
+                    item={item}
+                    mediaType="movie"
+                    addedStatus={getAddedStatus(item.title, 'movie')}
+                    onAddToPlan={() => onAddToPlan(item, 'movie')}
+                    onAddToWatching={() => onAddToWatching(item, 'movie')}
+                    onAddAsWatched={() => setPendingWatched({ rec: item, mediaType: 'movie' })}
+                  />
+                ))}
               </div>
             ) : (
               <div className={styles.noRecs}>
@@ -183,7 +251,17 @@ export default function Recommendations({ movies, shows }) {
           {activeSection === 'shows' && (
             recs.shows.length > 0 ? (
               <div className={styles.grid}>
-                {recs.shows.map(item => <RecCard key={item.title} item={item} mediaType="show" />)}
+                {recs.shows.map(item => (
+                  <RecCard
+                    key={item.title}
+                    item={item}
+                    mediaType="show"
+                    addedStatus={getAddedStatus(item.title, 'show')}
+                    onAddToPlan={() => onAddToPlan(item, 'show')}
+                    onAddToWatching={() => onAddToWatching(item, 'show')}
+                    onAddAsWatched={() => setPendingWatched({ rec: item, mediaType: 'show' })}
+                  />
+                ))}
               </div>
             ) : (
               <div className={styles.noRecs}>
@@ -192,6 +270,24 @@ export default function Recommendations({ movies, shows }) {
             )
           )}
         </>
+      )}
+
+      {pendingWatched && (
+        <MediaForm
+          type={pendingWatched.mediaType}
+          categories={pendingWatched.mediaType === 'movie' ? movieCategories : showCategories}
+          existing={{
+            title: pendingWatched.rec.title,
+            year: pendingWatched.rec.year,
+            categories: pendingWatched.rec.genres,
+            notes: '',
+          }}
+          onSubmit={ratedItem => {
+            onAddAsWatched(ratedItem, pendingWatched.mediaType)
+            setPendingWatched(null)
+          }}
+          onClose={() => setPendingWatched(null)}
+        />
       )}
     </div>
   )

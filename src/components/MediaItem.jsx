@@ -21,7 +21,7 @@ function PosterThumb({ title, year, mediaType }) {
   )
 }
 
-export default function MediaItem({ item, type, onDelete, onEdit }) {
+export default function MediaItem({ item, type, onDelete, onEdit, onMoveToPlan, onMoveToWatching }) {
   return (
     <div className={styles.item}>
       <PosterThumb title={item.title} year={item.year} mediaType={type} />
@@ -45,6 +45,20 @@ export default function MediaItem({ item, type, onDelete, onEdit }) {
       <div className={styles.right}>
         <RatingBadge rating={item.rating} />
         <div className={styles.actions}>
+          {onMoveToPlan && (
+            <button className={styles.planBtn} onClick={onMoveToPlan} title="Move to Plan to Watch">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+              </svg>
+            </button>
+          )}
+          {onMoveToWatching && (
+            <button className={styles.watchingBtn} onClick={onMoveToWatching} title="Move to Watching">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </button>
+          )}
           <button className={styles.editBtn} onClick={() => onEdit(item)} title="Edit">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
