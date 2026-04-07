@@ -13,7 +13,7 @@ export const MOVIE_DATABASE = [
   { title: "Schindler's List", year: 1993, genres: ["Drama", "History", "Biography"] },
   { title: "The Silence of the Lambs", year: 1991, genres: ["Crime", "Thriller", "Horror"] },
   { title: "Parasite", year: 2019, genres: ["Drama", "Thriller", "Comedy"] },
-  { title: "Spirited Away", year: 2001, genres: ["Animation", "Fantasy", "Adventure"] },
+  { title: "Spirited Away", year: 2001, genres: ["Anime", "Fantasy", "Adventure"] },
   { title: "Whiplash", year: 2014, genres: ["Drama", "Music"] },
   { title: "La La Land", year: 2016, genres: ["Drama", "Music", "Romance"] },
   { title: "Get Out", year: 2017, genres: ["Horror", "Thriller"] },
@@ -50,6 +50,20 @@ export const MOVIE_DATABASE = [
   { title: "Gone Girl", year: 2014, genres: ["Drama", "Mystery", "Thriller"] },
   { title: "The Prestige", year: 2006, genres: ["Drama", "Mystery", "Sci-Fi"] },
   { title: "Eternal Sunshine of the Spotless Mind", year: 2004, genres: ["Drama", "Romance", "Sci-Fi"] },
+  // Anime films
+  { title: "Your Name", year: 2016, genres: ["Anime", "Drama", "Fantasy", "Romance"] },
+  { title: "Akira", year: 1988, genres: ["Anime", "Action", "Sci-Fi"] },
+  { title: "Princess Mononoke", year: 1997, genres: ["Anime", "Action", "Adventure", "Fantasy"] },
+  { title: "Howl's Moving Castle", year: 2004, genres: ["Anime", "Adventure", "Fantasy", "Romance"] },
+  { title: "My Neighbor Totoro", year: 1988, genres: ["Anime", "Family", "Fantasy"] },
+  { title: "A Silent Voice", year: 2016, genres: ["Anime", "Drama", "Romance"] },
+  { title: "Wolf Children", year: 2012, genres: ["Anime", "Drama", "Fantasy"] },
+  { title: "Perfect Blue", year: 1997, genres: ["Anime", "Drama", "Horror", "Mystery", "Thriller"] },
+  { title: "The Wind Rises", year: 2013, genres: ["Anime", "Drama", "History", "Romance"] },
+  { title: "Nausicaä of the Valley of the Wind", year: 1984, genres: ["Anime", "Action", "Adventure", "Fantasy"] },
+  { title: "Grave of the Fireflies", year: 1988, genres: ["Anime", "Drama", "History", "War"] },
+  { title: "Castle in the Sky", year: 1986, genres: ["Anime", "Action", "Adventure", "Fantasy"] },
+  { title: "Paprika", year: 2006, genres: ["Anime", "Mystery", "Sci-Fi", "Thriller"] },
 ]
 
 export const SHOW_DATABASE = [
@@ -103,6 +117,22 @@ export const SHOW_DATABASE = [
   { title: "Avatar: The Last Airbender", year: 2005, genres: ["Action", "Animation", "Adventure", "Fantasy"] },
   { title: "Mr. Robot", year: 2015, genres: ["Crime", "Drama", "Thriller"] },
   { title: "Halt and Catch Fire", year: 2014, genres: ["Drama"] },
+  // Anime series
+  { title: "Attack on Titan", year: 2013, genres: ["Anime", "Action", "Drama", "Fantasy"] },
+  { title: "Death Note", year: 2006, genres: ["Anime", "Crime", "Mystery", "Thriller"] },
+  { title: "Fullmetal Alchemist: Brotherhood", year: 2009, genres: ["Anime", "Action", "Adventure", "Drama", "Fantasy"] },
+  { title: "Cowboy Bebop", year: 1998, genres: ["Anime", "Action", "Drama", "Sci-Fi"] },
+  { title: "Neon Genesis Evangelion", year: 1995, genres: ["Anime", "Drama", "Sci-Fi"] },
+  { title: "Hunter x Hunter", year: 2011, genres: ["Anime", "Action", "Adventure", "Fantasy"] },
+  { title: "Demon Slayer", year: 2019, genres: ["Anime", "Action", "Fantasy"] },
+  { title: "Jujutsu Kaisen", year: 2020, genres: ["Anime", "Action", "Fantasy"] },
+  { title: "Steins;Gate", year: 2011, genres: ["Anime", "Drama", "Sci-Fi", "Thriller"] },
+  { title: "Vinland Saga", year: 2019, genres: ["Anime", "Action", "Drama", "History"] },
+  { title: "Violet Evergarden", year: 2018, genres: ["Anime", "Drama", "Fantasy", "Romance"] },
+  { title: "Made in Abyss", year: 2017, genres: ["Anime", "Adventure", "Drama", "Fantasy"] },
+  { title: "Code Geass", year: 2006, genres: ["Anime", "Action", "Drama", "Sci-Fi"] },
+  { title: "One Punch Man", year: 2015, genres: ["Anime", "Action", "Comedy"] },
+  { title: "Mob Psycho 100", year: 2016, genres: ["Anime", "Action", "Comedy", "Drama"] },
 ]
 
 export function getRecommendations(watchedMovies, watchedShows) {
