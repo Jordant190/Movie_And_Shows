@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import MediaTab from './components/MediaTab'
+import WatchlistTab from './components/WatchlistTab'
 import Recommendations from './components/Recommendations'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import styles from './App.module.css'
@@ -13,6 +14,24 @@ export default function App() {
   const [shows, setShows] = useLocalStorage('mediaTracker_shows', [])
   const [movieCategories, setMovieCategories] = useLocalStorage('mediaTracker_movieCategories', [...DEFAULT_CATEGORIES])
   const [showCategories, setShowCategories] = useLocalStorage('mediaTracker_showCategories', [...DEFAULT_CATEGORIES])
+
+  const [watchlist, setWatchlist] = useLocalStorage('mediaTracker_watchlist', [])
+  const [watching, setWatching] = useLocalStorage('mediaTracker_watching', [])
+  const [watchlistCategories, setWatchlistCategories] = useLocalStorage('mediaTracker_watchlistCategories', [...DEFAULT_CATEGORIES])
+
+  function moveToWatching(item) {
+    setWatchlist(prev => prev.filter(i => i.id !== item.id))
+    setWatching(prev => [item, ...prev])
+  }
+
+  function moveToWatched(watchingItem, ratedItem) {
+    setWatching(prev => prev.filter(i => i.id !== watchingItem.id))
+    if (watchingItem.mediaType === 'movie') {
+      setMovies(prev => [ratedItem, ...prev])
+    } else {
+      setShows(prev => [ratedItem, ...prev])
+    }
+  }
 
   return (
     <div className={styles.app}>
@@ -29,6 +48,18 @@ export default function App() {
             <span className={styles.headerStat}>{movies.length} movies</span>
             <span className={styles.headerStatDot}>·</span>
             <span className={styles.headerStat}>{shows.length} shows</span>
+            {watchlist.length > 0 && (
+              <>
+                <span className={styles.headerStatDot}>·</span>
+                <span className={styles.headerStat}>{watchlist.length} planned</span>
+              </>
+            )}
+            {watching.length > 0 && (
+              <>
+                <span className={styles.headerStatDot}>·</span>
+                <span className={styles.headerStat}>{watching.length} watching</span>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -37,6 +68,8 @@ export default function App() {
         {[
           { id: 'movies', label: 'Movies', count: movies.length },
           { id: 'shows', label: 'Shows', count: shows.length },
+          { id: 'watchlist', label: 'Plan to Watch', count: watchlist.length },
+          { id: 'watching', label: 'Watching', count: watching.length },
           { id: 'recommendations', label: 'Recommendations', count: null },
         ].map(tab => (
           <button
@@ -69,6 +102,30 @@ export default function App() {
             setItems={setShows}
             categories={showCategories}
             setCategories={setShowCategories}
+          />
+        )}
+        {activeTab === 'watchlist' && (
+          <WatchlistTab
+            mode="plan"
+            items={watchlist}
+            setItems={setWatchlist}
+            categories={watchlistCategories}
+            setCategories={setWatchlistCategories}
+            onMoveToWatching={moveToWatching}
+            movieCategories={movieCategories}
+            showCategories={showCategories}
+          />
+        )}
+        {activeTab === 'watching' && (
+          <WatchlistTab
+            mode="watching"
+            items={watching}
+            setItems={setWatching}
+            categories={watchlistCategories}
+            setCategories={setWatchlistCategories}
+            onMoveToWatched={moveToWatched}
+            movieCategories={movieCategories}
+            showCategories={showCategories}
           />
         )}
         {activeTab === 'recommendations' && (

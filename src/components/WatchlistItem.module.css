@@ -1,0 +1,175 @@
+.item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.item:hover {
+  border-color: rgba(124, 111, 247, 0.3);
+  background: var(--bg-card-hover);
+}
+
+.poster {
+  width: 48px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  flex: 1;
+}
+
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 0.97rem;
+  color: var(--text-primary);
+}
+
+.year {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.typeBadge {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.typeBadgeMovie {
+  background: rgba(124, 111, 247, 0.15);
+  color: #9589ff;
+  border: 1px solid rgba(124, 111, 247, 0.25);
+}
+
+.typeBadgeShow {
+  background: rgba(240, 160, 48, 0.15);
+  color: #f0a030;
+  border: 1px solid rgba(240, 160, 48, 0.25);
+}
+
+.cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.cat {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--accent-dim);
+  color: var(--accent-hover);
+  border: 1px solid rgba(124, 111, 247, 0.25);
+}
+
+.progress {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.progressLabel {
+  font-weight: 600;
+  color: var(--warning);
+}
+
+.notes {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+}
+
+.watchingBtn,
+.watchedBtn,
+.editBtn,
+.deleteBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.watchingBtn {
+  color: var(--accent-hover);
+}
+
+.watchingBtn:hover {
+  color: white;
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.watchedBtn {
+  color: var(--success);
+}
+
+.watchedBtn:hover {
+  color: white;
+  border-color: var(--success);
+  background: var(--success);
+}
+
+.editBtn {
+  color: var(--text-secondary);
+}
+
+.editBtn:hover {
+  color: var(--accent-hover);
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.deleteBtn {
+  color: var(--text-secondary);
+}
+
+.deleteBtn:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: var(--danger-dim);
+}
